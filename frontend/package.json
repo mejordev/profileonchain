@@ -9,7 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@polkadot/keyring": "^13.0.2",
+    "@polkadot/util-crypto": "^13.0.2",
     "@radix-ui/react-slot": "^1.1.0",
+    "@solana/web3.js": "^1.95.2",
+    "@tanstack/react-query": "^5.51.21",
+    "@ton/ton": "^14.0.0",
+    "bitcoinjs-lib": "^6.1.6",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "lucide-react": "^0.424.0",
@@ -17,9 +23,12 @@
     "react": "^18",
     "react-dom": "^18",
     "tailwind-merge": "^2.4.0",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "viem": "^2.18.7",
+    "wagmi": "^2.12.2"
   },
   "devDependencies": {
+    "@types/bs58": "^4.0.4",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
