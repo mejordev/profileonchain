@@ -1,29 +1,28 @@
 import express from 'express';
-import { EAS, Offchain, SchemaEncoder, SchemaRegistry } from "@ethereum-attestation-service/eas-sdk";
+import { EAS, SchemaEncoder } from '@ethereum-attestation-service/eas-sdk';
 import { ethers } from 'ethers';
 import dotenv from 'dotenv';
+import { SCHEMA, SCHEMA_UID } from './constants/global.js';
 
-// Load environment variables from .env file
+// Load environment variables
 dotenv.config();
 
-const EASContractAddress = process.env.EAS_CONTRACT_ADDRESS; // Sepolia v0.26
+// Initialize Schema Encoder
+const schemaEncoder = new SchemaEncoder(SCHEMA);
 
-// Initialize the EAS SDK with the contract address
+// Initialize EAS with contract address from environment
+const EASContractAddress = process.env.EAS_CONTRACT_ADDRESS;
 const eas = new EAS(EASContractAddress);
 
-// Get a default provider (in production use something like infura/alchemy)
-const provider = ethers.getDefaultProvider('sepolia');
+// Setup Ethereum provider and signer
+const provider = ethers.getDefaultProvider('https://sepolia.base.org');
+const privateKey = process.env.PRIVATE_KEY2;
+const signer = new ethers.Wallet(privateKey, provider);
+eas.connect(signer);
 
-const privateKey = process.env.PRIVATE_KEY; // replace with your private key
-const wallet = new ethers.Wallet(privateKey, provider);
-
-// Connect the wallet to the EAS SDK
-eas.connect(wallet);
-
+// Initialize Express application
 const app = express();
-
-// Middleware for JSON parsing
-app.use(express.json());
+app.use(express.json()); // Middleware for JSON parsing
 
 // CORS configuration
 app.use((req, res, next) => {
@@ -33,64 +32,119 @@ app.use((req, res, next) => {
   next();
 });
 
-// Test API endpoint
-app.get('/test', (req, res) => {
-  try {
-    res.status(200).json({ message: 'API is working' });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
+// Utility function to validate request body
+const validateRequestBody = body => {
+  const { name, bitcoin, ethereum, solana, polkadot, ton, litecoin, ripple } =
+    body;
+  if (!name) return 'Name is required';
 
-// API endpoint to get attestation
-app.get('/test2', async (req, res) => {
-  try {
-    const uid = '0xff08bbf3d3e6e0992fc70ab9b9370416be59e87897c3d42b20549901d2cccc3e';
-    const attestation = await eas.getAttestation(uid);
-    console.log(attestation);
-    res.status(200).json({ message: attestation[0] });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+  const requiredAddress = {
+    bitcoin,
+    ethereum,
+    solana,
+    polkadot,
+    ton,
+    litecoin,
+    ripple,
+  };
+  for (const [blockchain, value] of Object.entries(requiredAddress)) {
+    if (!value || value.trim() === '') {
+      return `${blockchain} address is required`;
+    }
   }
-});
+  return null;
+};
 
-// API endpoint to sign and verify offchain attestation
-app.get('/test3', async (req, res) => {
+// Utility function to encode data
+const encodeData = body => {
+  const {
+    name,
+    description,
+    avatarUrl,
+    website,
+    bitcoin,
+    ethereum,
+    solana,
+    polkadot,
+    ton,
+    litecoin,
+    ripple,
+  } = body;
+  return schemaEncoder.encodeData([
+    { name: 'name', value: name, type: 'string' },
+    { name: 'description', value: description || '', type: 'string' },
+    { name: 'avatarUrl', value: avatarUrl || '', type: 'string' },
+    { name: 'website', value: website || '', type: 'string' },
+    { name: 'bitcoin', value: bitcoin, type: 'string' },
+    { name: 'ethereum', value: ethereum, type: 'address' },
+    { name: 'solana', value: solana, type: 'string' },
+    { name: 'polkadot', value: polkadot, type: 'string' },
+    { name: 'ton', value: ton, type: 'string' },
+    { name: 'litecoin', value: litecoin, type: 'string' },
+    { name: 'ripple', value: ripple, type: 'string' },
+  ]);
+};
+
+// Handler for creating offchain attestation
+app.post('/create', async (req, res) => {
   try {
+    const validationError = validateRequestBody(req.body);
+    if (validationError)
+      return res.status(400).json({ message: validationError });
+
     const offchain = await eas.getOffchain();
-    const schemaEncoder = new SchemaEncoder("uint256 eventId, uint8 voteIndex");
-    const encodedData = schemaEncoder.encodeData([
-      { name: "eventId", value: 1, type: "uint256" },
-      { name: "voteIndex", value: 1, type: "uint8" },
-    ]);
+    const encodedData = encodeData(req.body);
 
-    const signer = new ethers.Wallet(privateKey, provider);
+    const attestation = await offchain.signOffchainAttestation(
+      {
+        recipient: '0xa42428D1bf904d762adD02b27ADac26d53643782',
+        expirationTime: 0,
+        time: 1722873907,
+        revocable: true,
+        schema: SCHEMA_UID,
+        refUID:
+          '0x0000000000000000000000000000000000000000000000000000000000000000',
+        data: encodedData,
+      },
+      signer,
+    );
 
-    const attestation = await offchain.signOffchainAttestation({
-      recipient: '0xFD50b031E778fAb33DfD2Fc3Ca66a1EeF0652165',
-      expirationTime: 0,
-      time: 1671219636,
-      revocable: true,
-      version: 1,
-      nonce: 0,
-      schema: "0xb16fa048b0d597f5a821747eba64efa4762ee5143e9a80600d0005386edfc995",
-      refUID: '0x0000000000000000000000000000000000000000000000000000000000000000',
-      data: encodedData,
-    }, signer);
-
-    const EAS_CONFIG = {
-      address: attestation.domain.verifyingContract,
-      version: attestation.domain.version,
-      chainId: attestation.domain.chainId,
-    };
+    console.log(attestation);
 
     const isValidAttestation = offchain.verifyOffchainAttestationSignature(
       signer.address,
-      attestation
+      attestation,
     );
-
     res.status(200).json({ isValidAttestation });
   } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// Handler for creating on-chain attestation
+app.post('/createChain', async (req, res) => {
+  try {
+    const validationError = validateRequestBody(req.body);
+    if (validationError)
+      return res.status(400).json({ message: validationError });
+
+    const encodedData = encodeData(req.body);
+
+    const tx = await eas.attest({
+      schema: SCHEMA_UID,
+      data: {
+        recipient: '0x0000000000000000000000000000000000000000',
+        expirationTime: 0,
+        revocable: true,
+        data: encodedData,
+      },
+    });
+    const newAttestationUID = await tx.wait();
+    console.log('New attestation UID:', newAttestationUID);
+
+    res.status(200).json({ newAttestationUID });
+  } catch (error) {
+    console.error('Error: ', error);
     res.status(500).json({ message: error.message });
   }
 });

@@ -19,7 +19,7 @@ const footerLinks = [
 
 export const Footer = () => {
   return (
-    <div className="relative flex flex-col lg:flex-row bg-primary py-4 justify-center items-center rounded-t-2xl z-1 font-light gap-6 lg:gap-8">
+    <div className="relative flex flex-col lg:flex-row bg-primary py-4 justify-center items-center rounded-t-2xl z-1 font-light gap-6 lg:gap-8 text-primary-foreground">
       <div className="flex gap-2 items-center">
         <Link href="/" className="text-xl flex gap-1 items-center">
           <Image src="vercel.svg" alt="logo" width={40} height={40} />

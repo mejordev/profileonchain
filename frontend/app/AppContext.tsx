@@ -1,6 +1,6 @@
-import { useUser, useUserActions } from "@/store/user.store";
-import { ReactNode, createContext, useContext, useEffect } from "react";
-import { useAccount } from "wagmi";
+import { useUser, useUserActions } from '@/store/user.store';
+import { ReactNode, createContext, useContext, useEffect } from 'react';
+import { useAccount } from 'wagmi';
 
 type AppContextType = {};
 
@@ -9,7 +9,7 @@ const AppContext = createContext<AppContextType>({} as AppContextType);
 export const useApp = () => {
   const context = useContext(AppContext);
   if (!context) {
-    throw new Error("useApp must be used within a AppProvider");
+    throw new Error('useApp must be used within a AppProvider');
   }
   return context;
 };
@@ -36,7 +36,6 @@ export const AppProvider = ({ children }: AppProviderProps) => {
     setUser(undefined);
     setAddress(undefined);
   };
-
 
   useEffect(() => {
     if (isDisconnected) {

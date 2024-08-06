@@ -24,22 +24,25 @@ export default function RootLayout({
 }>) {
   return (
     <html suppressHydrationWarning>
-    <body>
-      <Providers>
-    <Toaster />
-      <div
-        className={
-          (cn(poppins.className),
-          "relative flex flex-col min-h-screen lg:overflow-x-hidden")
-        }
-      >
-        <TopBar />
-        <main className="flex min-h-screen flex-col items-center justify-between p-24">{children}</main>
-        <Footer />
-      </div>
-  </Providers>
-    </body>
-  </html>
-    
+      <body>
+        <Providers>
+          <Toaster />
+          <div
+            className={
+              (cn(poppins.className),
+              "relative flex flex-col min-h-screen lg:overflow-x-hidden")
+            }
+          >
+            <TopBar />
+            <div className="flex-1 flex">
+              <main className="flex-1 flex flex-col items-center justify-between p-12">
+                {children}
+              </main>
+            </div>
+            <Footer />
+          </div>
+        </Providers>
+      </body>
+    </html>
   );
 }

@@ -1,31 +1,32 @@
-import { createConfig, http } from "wagmi";
-import { injected } from "wagmi/connectors";
-import { base, Chain, optimism } from "viem/chains";
-import { ConfigChain } from "@/store/types";
+import { createConfig, http } from 'wagmi';
+import { injected } from 'wagmi/connectors';
+import { base, baseSepolia, Chain, optimism } from 'viem/chains';
+import { ConfigChain } from '@/store/types';
+
+export const API_URL = 'http://localhost:4000';
 
 export const CHAIN_CONFIGS: ConfigChain[] = [
   {
-    chain: base,
-    chainLogo: "/img/chains/base-logo.png",
+    chain: baseSepolia,
+    chainLogo: '/img/chains/base-logo.png',
     routerContract:
-      "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE" as `0x${string}`,
+      '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE' as `0x${string}`,
   },
   {
     chain: optimism,
-    chainLogo: "/img/chains/optimism-logo.png",
+    chainLogo: '/img/chains/optimism-logo.png',
     routerContract:
-      "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE" as `0x${string}`,
+      '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE' as `0x${string}`,
   },
-
 ];
 
-export const CHAINS_LIST = CHAIN_CONFIGS.map((config) => config.chain) as [
+export const CHAINS_LIST = CHAIN_CONFIGS.map(config => config.chain) as [
   Chain,
-  ...Chain[]
+  ...Chain[],
 ];
 
 if (CHAINS_LIST.length === 0) {
-  throw new Error("CHAINS_LIST is empty");
+  throw new Error('CHAINS_LIST is empty');
 }
 
 export const ConfigWagmi = createConfig({
@@ -38,4 +39,3 @@ export const ConfigWagmi = createConfig({
 });
 
 export const DEFAULT_CHAIN = CHAIN_CONFIGS[0];
-
