@@ -3,9 +3,7 @@ import { EAS, SchemaEncoder } from '@ethereum-attestation-service/eas-sdk';
 import { ethers } from 'ethers';
 import dotenv from 'dotenv';
 import { SCHEMA, SCHEMA_UID } from './constants/global.js';
-import { PrismaClient } from '@prisma/client';
 
-const prisma = new PrismaClient();
 // Load environment variables
 dotenv.config();
 
@@ -185,19 +183,9 @@ app.post('/save', async (req, res) => {
     const rawData = toJSON(attestation);
     console.log(rawData);
 
-    const newLog = await prisma.attestationOffchain.create({
-      data: {
-        uid: attestation.uid,
-        data: rawData,
-      },
-    });
-    console.log('ALLLLLLLLLLLLLLLLLLLLLLLLLLL');
-    const allAttestations = await prisma.attestationOffchain.findMany();
-    console.log('All Attestations:', allAttestations);
-
     const isValidAttestation = offchain.verifyOffchainAttestationSignature(
       signer.address,
-      JSON.parse(allAttestations[0]['data']),
+      JSON.parse(rawData),
     );
     res.status(200).json({ isValidAttestation });
   } catch (error) {
