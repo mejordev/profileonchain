@@ -1,23 +1,26 @@
-"use client"
-import { useUser } from "@/store/user.store";
-import { useRouter, usePathname } from "next/navigation";
-import { ConnectButton } from "./ConnectButton";
-import { ConnectSheet } from "./ConnectSheet";
-import NetworkInfo from "./NetworkInfo";
-import { Button } from "../ui/button";
+'use client';
+import { useUser } from '@/store/user.store';
+import { useRouter, usePathname } from 'next/navigation';
+import { ConnectButton } from './ConnectButton';
+import { ConnectSheet } from './ConnectSheet';
+import NetworkInfo from './NetworkInfo';
+import { Button } from '../ui/button';
+import { useAccount } from 'wagmi';
 
 interface MenuProps {}
 
 export const Menu = (props: MenuProps) => {
-  const { address } = useUser();
+  const { address } = useAccount();
+  // const { address } = useUser();
+
   const router = useRouter();
   const pathname = usePathname();
 
   const goToUserPanel = () => {
-    router.push("/panel");
+    router.push('/panel');
   };
 
-  const isIndexPage = pathname === "/";
+  const isIndexPage = pathname === '/';
 
   return (
     <>

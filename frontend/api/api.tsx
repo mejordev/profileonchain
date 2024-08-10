@@ -2,7 +2,7 @@ import { API_URL } from '@/constants/global';
 import { UserData } from '@/store/types';
 import axios from 'axios';
 
-const mockData: UserData = {
+export const mockData: UserData = {
   name: 'Test Name',
   description: 'Test Description',
   avatarUrl: 'http://example.com/avatar.png',
@@ -16,9 +16,21 @@ const mockData: UserData = {
   ripple: 'RippleMockAddress',
 };
 
-export const handleSubmit = async (url: string) => {
+export const handleApiCall = async (url: string) => {
   try {
     const response = await axios.post(API_URL.concat(url), mockData);
+    console.log(JSON.stringify(response.data));
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      console.log(error.response.data.message);
+    } else {
+      console.log('An error occurred');
+    }
+  }
+};
+export const handleApiCreateCall = async (url: string, attestation: any) => {
+  try {
+    const response = await axios.post(API_URL.concat(url), attestation);
     console.log(JSON.stringify(response.data));
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {

@@ -1,7 +1,7 @@
-import Link from "next/link";
-import Image from "next/image";
-import { MobileMenu } from "./MobileMenu";
-import { Menu } from "./Menu";
+import Link from 'next/link';
+import Image from 'next/image';
+import { MobileMenu } from './MobileMenu';
+import { Menu } from './Menu';
 
 interface TopBarProps {}
 
@@ -21,7 +21,7 @@ export const TopBar = (props: TopBarProps) => {
               color="white"
             />
             <h2 className="uppercase font-semibold relative">
-            ProfileOnchain
+              ProfileOnchain
               <span className="absolute right-[-20px] top-[110%] text-xs font-bold text-primary bg-white px-1.5 rounded-full">
                 BETA
               </span>
@@ -29,12 +29,12 @@ export const TopBar = (props: TopBarProps) => {
           </Link>
         </div>
 
-        <div className="flex lg:hidden">
+        <div className="flex sm:hidden">
           <MobileMenu />
         </div>
-        <div className="hidden lg:flex items-center justify-end gap-2">
+        <div className="hidden sm:flex items-center justify-end gap-2">
           <Menu />
-          </div>
+        </div>
       </div>
     </div>
   );

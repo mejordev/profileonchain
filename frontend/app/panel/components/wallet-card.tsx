@@ -14,11 +14,13 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { WalletDialog } from './wallet-dialog';
 import { useWallets, useWalletsActions } from '@/store/wallets.store';
+import { createEasOffchain } from '@/api/eas';
+import { mockData } from '@/api/api';
 
 const WalletCard = () => {
   const { bitcoin, ethereum, solana, polkadot, ton, litecoin, ripple } =
     useUserStore();
-  const { isCopied } = useWallets();
+  const { isCopied, ethereumPrivKey } = useWallets();
   const { setCopied, reset } = useWalletsActions();
   return (
     <Card>
@@ -31,14 +33,14 @@ const WalletCard = () => {
       <CardContent>
         <form className="flex flex-col gap-4">
           <InputField
-            id="bitcoin"
-            label="Bitcoin Wallet Address"
-            value={bitcoin}
-          />
-          <InputField
             id="ethereum"
             label="Ethereum Wallet Address"
             value={ethereum}
+          />
+          <InputField
+            id="bitcoin"
+            label="Bitcoin Wallet Address"
+            value={bitcoin}
           />
           <InputField
             id="solana"
@@ -82,14 +84,21 @@ const WalletCard = () => {
       <CardFooter className="border-t px-6 py-4">
         {isCopied && (
           <Button
-            className="w-full"
-            onClick={() => {
-              console.log('/save');
-              reset();
+            onClick={async () => {
+              await createEasOffchain(mockData, ethereumPrivKey);
             }}
           >
-            Show profile {isCopied}
+            Generate
           </Button>
+          // <Button
+          //   className="w-full"
+          //   onClick={() => {
+          //     console.log('/save');
+          //     reset();
+          //   }}
+          // >
+          //   Show profile {isCopied}
+          // </Button>
         )}
 
         <WalletDialog></WalletDialog>

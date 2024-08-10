@@ -17,12 +17,7 @@ const EASContractAddress = process.env.EAS_CONTRACT_ADDRESS;
 const eas = new EAS(EASContractAddress);
 
 // Setup Ethereum provider and signer
-
-// const provider = ethers.getDefaultProvider('https://sepolia.base.org');
-const provider = ethers.getDefaultProvider(
-  'https://virtual.base-sepolia.rpc.tenderly.co/9d9813ae-2960-4d92-9e4d-19df3a05e04a',
-);
-
+const provider = ethers.getDefaultProvider('https://sepolia.base.org');
 const privateKey = process.env.PRIVATE_KEY2;
 const signer = new ethers.Wallet(privateKey, provider);
 eas.connect(signer);
@@ -105,7 +100,25 @@ app.post('/create', async (req, res) => {
       return res.status(400).json({ message: validationError });
 
     const offchain = await eas.getOffchain();
+    const encodedData = encodeData(req.body);
+
+    const attestation = await offchain.signOffchainAttestation(
+      {
+        recipient: '0xa42428D1bf904d762adD02b27ADac26d53643782',
+        expirationTime: 0,
+        time: BigInt(Math.floor(Date.now() / 1000)),
+        revocable: true,
+        schema: SCHEMA_UID,
+        refUID:
+          '0x0000000000000000000000000000000000000000000000000000000000000000',
+        data: encodedData,
+      },
+      signer,
+    );
+
+    console.log(attestation);
     const rawData = toJSON(attestation);
+    console.log(rawData);
 
     const isValidAttestation = offchain.verifyOffchainAttestationSignature(
       signer.address,
@@ -119,14 +132,12 @@ app.post('/create', async (req, res) => {
 
 // Handler for creating on-chain attestation
 app.post('/createChain', async (req, res) => {
-  const encodedData = req.body.message.data;
-  const dencodedData = schemaEncoder.decodeData(req.body.message.data);
-
-  console.log('Data', dencodedData);
   try {
-    //   const validationError = validateRequestBody(dencodedData);
-    //   if (validationError)
-    //     return res.status(400).json({ message: validationError });
+    const validationError = validateRequestBody(req.body);
+    if (validationError)
+      return res.status(400).json({ message: validationError });
+
+    const encodedData = encodeData(req.body);
 
     const tx = await eas.attest({
       schema: SCHEMA_UID,

@@ -12,6 +12,11 @@ import {
 import { Button } from '@/components/ui/button';
 import { useWallets } from '@/store/wallets.store';
 import { ScrollArea } from '@/components/ui/scroll-area';
+
+import { AlertCircle } from 'lucide-react';
+
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+
 //TODO fix alerts look
 export const WalletDialog = () => {
   const { walletsLog } = useWallets();
@@ -50,10 +55,16 @@ export const WalletDialog = () => {
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+          <AlertDialogTitle>Copy your wallets data!</AlertDialogTitle>
           <AlertDialogDescription>
-            You need to copy and save these keys in a safe place. If you lose
-            them, you will lose access to your money forever!
+            <Alert variant="destructive">
+              <AlertCircle className="h-4 w-4" />
+              <AlertTitle>IMPORTANT!</AlertTitle>
+              <AlertDescription>
+                You need to copy and save these keys in a safe place. If you
+                lose them, you will lose access to your money forever!{' '}
+              </AlertDescription>
+            </Alert>
           </AlertDialogDescription>
         </AlertDialogHeader>
         <ScrollArea className="h-[300px] rounded-md border p-4">

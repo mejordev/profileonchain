@@ -4,7 +4,13 @@ import { base, baseSepolia, Chain, optimism } from 'viem/chains';
 import { ConfigChain } from '@/store/types';
 
 export const API_URL = 'http://localhost:4000';
+export const SCHEMA =
+  'string name,string description,string avatarUrl,string website,string bitcoin,address ethereum,string solana,string polkadot,string ton,string litecoin,string ripple';
 
+export const SCHEMA_UID =
+  '0xe096c284b6f5436ee1d6536638984a32508e56973def5be08191f60e9a12c279';
+export const EAS_CONTRACT_ADDRESS =
+  '0x4200000000000000000000000000000000000021';
 export const CHAIN_CONFIGS: ConfigChain[] = [
   {
     chain: baseSepolia,

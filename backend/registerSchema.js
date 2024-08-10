@@ -1,16 +1,18 @@
-import { SchemaRegistry } from "@ethereum-attestation-service/eas-sdk";
-import { ethers } from "ethers";
+import { SchemaRegistry } from '@ethereum-attestation-service/eas-sdk';
+import { ethers } from 'ethers';
 import dotenv from 'dotenv';
+import { SCHEMA } from './constants/global.js';
 
 // Load environment variables from .env file
 dotenv.config();
 
 // Replace with your actual schema registry contract address
-const schemaRegistryContractAddress = "0x4200000000000000000000000000000000000020";
+const schemaRegistryContractAddress =
+  '0x4200000000000000000000000000000000000020';
 const schemaRegistry = new SchemaRegistry(schemaRegistryContractAddress);
 
 if (!process.env.PRIVATE_KEY2) {
-  console.error("Error: PRIVATE_KEY2 is not defined in the .env file");
+  console.error('Error: PRIVATE_KEY2 is not defined in the .env file');
   process.exit(1);
 }
 
@@ -18,7 +20,6 @@ const url = 'https://sepolia.base.org';
 const provider = ethers.getDefaultProvider('base-sepolia');
 
 const wallet = new ethers.Wallet(process.env.PRIVATE_KEY2, provider);
-
 
 const account = wallet.address;
 console.log(`Using account: ${account}`);
@@ -35,10 +36,12 @@ await getBalance();
 schemaRegistry.connect(wallet);
 
 // Define the schema
-const schema = "string name,string description,string avatarUrl,string website,string bitcoin,string ethereum";
 
-const resolverAddress = "0x4200000000000000000000000000000000000020"; // Example resolver address
+const resolverAddress = '0x4200000000000000000000000000000000000020'; // Example resolver address
 const revocable = true;
+const schema = SCHEMA;
+// 'string name,string description,string avatarUrl,string website,string bitcoin,address ethereum,string solana,string polkadot,string ton,string litecoin,string ripple';
+//   'string name,string description,string avatarUrl,string website,string bitcoin,string ethereum';
 
 const registerSchema = async () => {
   try {
@@ -48,13 +51,13 @@ const registerSchema = async () => {
       revocable,
     });
 
-    console.log("Transaction created:", transaction.hash);
+    console.log('Transaction created:', transaction.hash);
 
     // Wait for transaction to be mined
     const receipt = await transaction.wait();
-    console.log("Schema registered successfully:", receipt);
+    console.log('Schema registered successfully:', receipt);
   } catch (error) {
-    console.error("Error registering schema:", error);
+    console.error('Error registering schema:', error);
   }
 };
 

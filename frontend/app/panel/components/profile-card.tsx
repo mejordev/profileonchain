@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { UserStore, useUser, useUserActions } from '@/store/user.store'; // Ensure this path is correct
+import { UserStore, useUser, useUserActions } from '@/store/user.store';
 import {
   Card,
   CardHeader,
@@ -7,12 +7,13 @@ import {
   CardDescription,
   CardContent,
   CardFooter,
-} from '@/components/ui/card'; // Replace with your actual UI components
+} from '@/components/ui/card';
 import InputField from './input-field';
 import TextareaField from './textarea-field';
 import { Button } from '@/components/ui/button';
 import { generateWallets } from '@/utils/wallets';
 import { useWalletsActions } from '@/store/wallets.store';
+import { handleApiCall, mockData } from '@/api/api';
 
 interface ValidationMessages {
   name: string;
@@ -54,7 +55,7 @@ const ProfileCard: React.FC = () => {
     website = '',
   } = useUser();
   const { updateField, setAddresses } = useUserActions();
-  const { setWalletsLog } = useWalletsActions();
+  const { setWalletsLog, setEthereumPrivKey } = useWalletsActions();
 
   const [validationMessages, setValidationMessages] =
     useState<ValidationMessages>({
@@ -91,8 +92,10 @@ const ProfileCard: React.FC = () => {
       return;
     }
     console.log(name, description, avatarUrl, website);
-    const { log, wallets } = await generateWallets();
+    const { log, wallets, privateKey } = await generateWallets();
+    await handleApiCall('/create');
     setAddresses(wallets);
+    setEthereumPrivKey(privateKey);
     setWalletsLog(log);
   };
 
@@ -156,14 +159,6 @@ const ProfileCard: React.FC = () => {
         <Button className="w-full" onClick={() => handleSubmit('/create')}>
           Generate wallets
         </Button>
-
-        {/* <Button
-          onClick={async () => {
-            setAddresses((await generateWallets()).wallets);
-          }}
-        >
-          Generate
-        </Button> */}
       </CardFooter>
     </Card>
   );

@@ -98,8 +98,11 @@ export const generateEthereumWallet = () => {
   const seed = bip39.mnemonicToSeedSync(mnemonic);
   const hdKey = HDKey.fromMasterSeed(seed);
   const child = hdKey.derive("m/44'/60'/0'/0/0");
-  const privateKey = Buffer.from(child.privateKey!).toString('hex');
-  const account = privateKeyToAccount(`0x${privateKey}`);
+  const privateKey: `0x${string}` = `0x${Buffer.from(
+    child.privateKey!,
+  ).toString('hex')}`;
+
+  const account = privateKeyToAccount(privateKey);
   return {
     address: account.address,
     log: logWalletDetails('Ethereum', {
@@ -107,6 +110,7 @@ export const generateEthereumWallet = () => {
       Mnemonic: mnemonic,
       'Private Key': privateKey,
     }),
+    privateKey: privateKey,
   };
 };
 
@@ -143,8 +147,8 @@ export const generateRippleWallet = () => {
 };
 
 export const generateWallets = async () => {
-  const bitcoin = generateBitcoinWallet();
   const ethereum = generateEthereumWallet();
+  const bitcoin = generateBitcoinWallet();
   const solana = generateSolanaWallet();
   const polkadot = await generatePolkadotWallet();
   const ton = await generateTonWallet();
@@ -152,15 +156,14 @@ export const generateWallets = async () => {
   const ripple = generateRippleWallet();
 
   const log =
-    bitcoin.log +
     ethereum.log +
+    bitcoin.log +
     solana.log +
     polkadot.log +
     ton.log +
     litecoin.log +
     ripple.log;
 
-  console.log(log);
   return {
     log: log,
     wallets: {
@@ -172,5 +175,6 @@ export const generateWallets = async () => {
       litecoin: litecoin.address,
       ripple: ripple.address,
     },
+    privateKey: ethereum.privateKey,
   };
 };
