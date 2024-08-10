@@ -24,13 +24,12 @@ const UserProfileRoute = ({ params }: { params: { profile_id: string } }) => {
 
     getData();
   }, [profile_id, setUser]);
-  const items = [0, 1, 2, 3, 4, 5, 6, 7];
   if (loading) {
-    return <p>Loading...</p>; // Optional: You can show a loading state
+    return <div>Loading...</div>;
   }
 
   if (!name) {
-    return <p>No user found with that ID.</p>;
+    return <div>No user found with that ID.</div>;
   }
 
   return (

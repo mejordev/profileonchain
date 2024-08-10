@@ -11,8 +11,35 @@ import NetworkInfo from '@/components/topBar/NetworkInfo';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
-
+import {
+  type BaseError,
+  useSendTransaction,
+  useWaitForTransactionReceipt,
+} from 'wagmi';
+import { parseEther } from 'viem';
+import { useUserStore } from '@/store/user.store';
 const EvmForm = () => {
+  const { ethereum } = useUserStore();
+  const {
+    data: hash,
+    error,
+    isPending,
+    sendTransaction,
+  } = useSendTransaction();
+
+  async function submit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const formData = new FormData(e.target as HTMLFormElement);
+    const to = ethereum as `0x${string}`;
+    const value = formData.get('value') as string;
+    console.log('valueee', value);
+    sendTransaction({ to, value: parseEther(value) });
+  }
+
+  const { isLoading: isConfirming, isSuccess: isConfirmed } =
+    useWaitForTransactionReceipt({
+      hash,
+    });
   return (
     <Card>
       <CardHeader className="text-center">
@@ -25,7 +52,7 @@ const EvmForm = () => {
       </CardHeader>
 
       <CardContent>
-        <form className="flex flex-col gap-4">
+        <form className="flex flex-col gap-4" onSubmit={submit}>
           <div className="grid gap-3">
             <Label htmlFor="network">Select chain:</Label>
             <NetworkInfo></NetworkInfo>
@@ -33,19 +60,26 @@ const EvmForm = () => {
           <div className="grid gap-3">
             <Label htmlFor="amount">Amount:</Label>
             <Input
-              id="amount"
+              name="value"
               type="number"
               min={0}
               className="w-full"
               step="0.00000000001"
               placeholder="Enter Amount"
-              // onChange={onChange}
             />
+            <Button className="w-full" disabled={isPending} type="submit">
+              {isPending ? 'Confirming...' : 'Send'}
+            </Button>
           </div>
         </form>
       </CardContent>
       <CardFooter className="border-t w-full px-6 py-4">
-        <Button className="w-full">Send donation</Button>
+        {hash && <div>Transaction Hash: {hash}</div>}
+        {isConfirming && <div>Waiting for confirmation...</div>}
+        {isConfirmed && <div>Transaction confirmed.</div>}
+        {error && (
+          <div>Error: {(error as BaseError).shortMessage || error.message}</div>
+        )}
       </CardFooter>
     </Card>
   );

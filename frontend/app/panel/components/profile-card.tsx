@@ -117,7 +117,9 @@ const ProfileCard: React.FC = () => {
             onChange={handleChange('name')}
           />
           {validationMessages.name && (
-            <p className="text-red-500 text-sm">{validationMessages.name}</p>
+            <div className="text-red-500 text-sm">
+              {validationMessages.name}
+            </div>
           )}
           <TextareaField
             id="description"
@@ -127,9 +129,9 @@ const ProfileCard: React.FC = () => {
             onChange={handleChange('description')}
           />
           {validationMessages.description && (
-            <p className="text-red-500 text-sm">
+            <div className="text-red-500 text-sm">
               {validationMessages.description}
-            </p>
+            </div>
           )}
           <InputField
             id="avatarUrl"
@@ -139,9 +141,9 @@ const ProfileCard: React.FC = () => {
             onChange={handleChange('avatarUrl')}
           />
           {validationMessages.avatarUrl && (
-            <p className="text-red-500 text-sm">
+            <div className="text-red-500 text-sm">
               {validationMessages.avatarUrl}
-            </p>
+            </div>
           )}
           <InputField
             id="website"
@@ -151,7 +153,9 @@ const ProfileCard: React.FC = () => {
             onChange={handleChange('website')}
           />
           {validationMessages.website && (
-            <p className="text-red-500 text-sm">{validationMessages.website}</p>
+            <div className="text-red-500 text-sm">
+              {validationMessages.website}
+            </div>
           )}
         </form>
       </CardContent>

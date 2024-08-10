@@ -20,12 +20,12 @@ export const TopBar = (props: TopBarProps) => {
               width={50}
               color="white"
             />
-            <h2 className="uppercase font-semibold relative">
+            <div className="uppercase font-semibold relative">
               ProfileOnchain
-              <span className="absolute right-[-20px] top-[110%] text-xs font-bold text-primary bg-white px-1.5 rounded-full">
+              <div className="absolute right-[-20px] top-[110%] text-xs font-bold text-primary bg-white px-1.5 rounded-full">
                 BETA
-              </span>
-            </h2>
+              </div>
+            </div>
           </Link>
         </div>
 

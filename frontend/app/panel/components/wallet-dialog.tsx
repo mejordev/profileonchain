@@ -87,7 +87,7 @@ export const WalletDialog = () => {
         <ScrollArea className="h-[300px] rounded-md border p-4">
           <div className="text-sm whitespace-pre-wrap">
             {walletsLogLines.map((line, index) => (
-              <p key={index}>{line}</p>
+              <div key={index}>{line}</div>
             ))}
           </div>
         </ScrollArea>

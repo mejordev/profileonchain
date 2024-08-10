@@ -31,9 +31,9 @@ export function ConnectButton() {
       <DropdownMenuContent className="w-35" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1 ">
-            <p className="text-xs leading-none text-muted-foreground">
+            <div className="text-xs leading-none text-muted-foreground">
               {shortenAddr(address!)}
-            </p>
+            </div>
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
