@@ -16,10 +16,11 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { AlertCircle } from 'lucide-react';
 
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { useToast } from '@/components/ui/use-toast';
 
-//TODO fix alerts look
 export const WalletDialog = () => {
   const { walletsLog } = useWallets();
+  const { toast } = useToast();
 
   // Split the walletsLog string into an array using the newline character
   const walletsLogLines = walletsLog.split('\n');
@@ -29,9 +30,17 @@ export const WalletDialog = () => {
     navigator.clipboard
       .writeText(walletsLog)
       .then(() => {
-        alert('Copied to clipboard!');
+        toast({
+          title: 'Copied',
+          description: 'Copied to clipboard!',
+        });
       })
       .catch(err => {
+        toast({
+          variant: 'destructive',
+          title: 'Failed to copy: ',
+          description: err,
+        });
         console.error('Failed to copy: ', err);
       });
   };
@@ -41,9 +50,17 @@ export const WalletDialog = () => {
     navigator.clipboard
       .writeText('')
       .then(() => {
-        alert('Clipboard cleared!');
+        toast({
+          title: 'Cleared!',
+          description: 'Clipboard cleared!',
+        });
       })
       .catch(err => {
+        toast({
+          variant: 'destructive',
+          title: 'Failed to copy: ',
+          description: err,
+        });
         console.error('Failed to clear clipboard: ', err);
       });
   };
@@ -78,10 +95,12 @@ export const WalletDialog = () => {
           <Button onClick={copyToClipboard} className="mr-2">
             Copy to Clipboard
           </Button>
-          <AlertDialogCancel onClick={clearClipboard}>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={clearClipboard}>
+          <AlertDialogCancel onClick={clearClipboard}>
             Continue
-          </AlertDialogAction>
+          </AlertDialogCancel>
+          {/* <AlertDialogAction onClick={clearClipboard}>
+            Continue
+          </AlertDialogAction> */}
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

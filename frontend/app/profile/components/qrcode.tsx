@@ -33,7 +33,7 @@ const CryptoQRCode: React.FC<CryptoQRCodeProps> = ({
       {qrCodeUrl ? (
         <img src={qrCodeUrl} alt="Crypto QR Code" />
       ) : (
-        <p>Generating QR code...</p>
+        <>Generating QR code...</>
       )}
     </div>
   );

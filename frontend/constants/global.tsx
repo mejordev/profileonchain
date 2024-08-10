@@ -2,6 +2,8 @@ import { createConfig, http } from 'wagmi';
 import { injected } from 'wagmi/connectors';
 import { base, baseSepolia, Chain, optimism } from 'viem/chains';
 import { ConfigChain } from '@/store/types';
+import { customBaseSepolia } from './chains';
+import { SchemaEncoder } from '@ethereum-attestation-service/eas-sdk';
 
 export const API_URL = 'http://localhost:4000';
 export const SCHEMA =
@@ -11,9 +13,11 @@ export const SCHEMA_UID =
   '0xe096c284b6f5436ee1d6536638984a32508e56973def5be08191f60e9a12c279';
 export const EAS_CONTRACT_ADDRESS =
   '0x4200000000000000000000000000000000000021';
+
+export const schemaEncoder = new SchemaEncoder(SCHEMA);
 export const CHAIN_CONFIGS: ConfigChain[] = [
   {
-    chain: baseSepolia,
+    chain: customBaseSepolia,
     chainLogo: '/img/chains/base-logo.png',
     routerContract:
       '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE' as `0x${string}`,

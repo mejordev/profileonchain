@@ -1,11 +1,15 @@
-import { EAS_CONTRACT_ADDRESS, SCHEMA, SCHEMA_UID } from '@/constants/global';
+import {
+  EAS_CONTRACT_ADDRESS,
+  SCHEMA,
+  SCHEMA_UID,
+  schemaEncoder,
+} from '@/constants/global';
 import { UserData } from '@/store/types';
 import { EAS, SchemaEncoder } from '@ethereum-attestation-service/eas-sdk';
 import { ethers } from 'ethers';
 import { handleApiCreateCall } from './api';
 
 // Initialize Schema Encoder
-const schemaEncoder = new SchemaEncoder(SCHEMA);
 
 // Initialize EAS with contract address from environment
 const eas = new EAS(EAS_CONTRACT_ADDRESS);

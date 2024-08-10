@@ -11,14 +11,16 @@ import {
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import CryptoQRCode from './qrcode';
+import NetworkInfo from '@/components/topBar/NetworkInfo';
+import { Input } from '@/components/ui/input';
 
 export const ProfileCard = () => {
-  const {
-    name = 'superhack2024',
-    description = 'Good morning, thank you very much for your support! The "coffees" you gifted me are the fuel that allows me to continue my work, often in the middle of the night :).',
-    avatarUrl = 'https://ethglobal.b-cdn.net/events/superhack2024/square-logo/default.png',
-  } = useUser();
-
+  // const {
+  //   name = 'superhack2024',
+  //   description = 'Good morning, thank you very much for your support! The "coffees" you gifted me are the fuel that allows me to continue my work, often in the middle of the night :).',
+  //   avatarUrl = 'https://ethglobal.b-cdn.net/events/superhack2024/square-logo/default.png',
+  // } = useUser();
+  const { name, description, avatarUrl } = useUser();
   return (
     <Card className="flex flex-col items-center text-center p-4">
       <div className="relative w-full flex justify-center">
@@ -34,27 +36,6 @@ export const ProfileCard = () => {
         {description}
       </CardDescription>
       <CardContent className="w-full"></CardContent>
-      <CardFooter className="border-t w-full px-6 py-4">
-        <div>
-          <h1>Crypto Transaction QR Code</h1>
-          <CryptoQRCode
-            chain="ethereum"
-            address="0x1f09Bd56Df49c4B51297FBFDEb506E1bA8F0bdfC"
-            amount={1}
-            label="Donation"
-          />
-        </div>
-        <Button className="w-full">Send donation</Button>
-        <div>
-          <h1>Crypto Transaction QR Code</h1>
-          <CryptoQRCode
-            chain="ethereum"
-            address="0x1f09Bd56Df49c4B51297FBFDEb506E1bA8F0bdfC"
-            amount={1}
-            label="Donation"
-          />
-        </div>
-      </CardFooter>
     </Card>
   );
 };

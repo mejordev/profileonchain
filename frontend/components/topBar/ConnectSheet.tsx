@@ -4,11 +4,11 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "@/components/ui/sheet";
-import { useEffect } from "react";
-import { useConnect } from "wagmi";
-import { Button } from "../ui/button";
-import { useToast } from "../ui/use-toast";
+} from '@/components/ui/sheet';
+import { useEffect } from 'react';
+import { useConnect } from 'wagmi';
+import { Button } from '../ui/button';
+import { useToast } from '../ui/use-toast';
 
 export function ConnectSheet() {
   const { connect, connectors, error } = useConnect();
@@ -18,9 +18,9 @@ export function ConnectSheet() {
   useEffect(() => {
     if (error?.message) {
       toast({
-        title: "Error",
+        title: 'Error',
         description: error.message,
-        variant: "destructive",
+        variant: 'destructive',
       });
     }
   }, [error]);
@@ -30,11 +30,11 @@ export function ConnectSheet() {
       <SheetTrigger asChild>
         <Button className="grid w-full">Connect wallet</Button>
       </SheetTrigger>
-      <SheetContent className="bg-black">
+      <SheetContent>
         <SheetHeader>
           <SheetTitle>Select provider</SheetTitle>
           <div className="grid gap-2">
-            {connectors.map((connector) => (
+            {connectors.map(connector => (
               <Button
                 key={connector.uid}
                 onClick={() => connect({ connector })}

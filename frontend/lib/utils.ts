@@ -1,14 +1,22 @@
-import { type ClassValue, clsx } from "clsx"
-import { twMerge } from "tailwind-merge"
+import { type ClassValue, clsx } from 'clsx';
+import { twMerge } from 'tailwind-merge';
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+  return twMerge(clsx(inputs));
 }
 export const shortenAddr = (addr: string): string => {
   if (addr && addr.length >= 10) {
     const pre = addr.slice(0, 5);
     const post = addr.slice(addr.length - 3, addr.length);
-    return pre.concat("...").concat(post);
+    return pre.concat('...').concat(post);
+  }
+  return addr;
+};
+export const shortenAddrLenght = (addr: string, lenght: number): string => {
+  if (addr && addr.length >= 10) {
+    const pre = addr.slice(0, lenght);
+    const post = addr.slice(addr.length - lenght, addr.length);
+    return pre.concat('...').concat(post);
   }
   return addr;
 };

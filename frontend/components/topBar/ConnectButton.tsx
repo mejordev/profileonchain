@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -7,16 +7,16 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { shortenAddr } from "@/lib/utils";
-import { useUser } from "@/store/user.store";
-import { useDisconnect } from "wagmi";
-import { FaChevronDown } from "react-icons/fa";
-import Link from "next/link";
-import { DEFAULT_CHAIN } from "@/constants/global";
+} from '@/components/ui/dropdown-menu';
+import { shortenAddr } from '@/lib/utils';
+import { useUser } from '@/store/user.store';
+import { useAccount, useDisconnect } from 'wagmi';
+import { FaChevronDown } from 'react-icons/fa';
+import Link from 'next/link';
+import { DEFAULT_CHAIN } from '@/constants/global';
 
 export function ConnectButton() {
-  const { address } = useUser();
+  const { address } = useAccount();
   const { disconnect } = useDisconnect();
   const chainConfig = DEFAULT_CHAIN;
 

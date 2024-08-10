@@ -1,20 +1,20 @@
-import type { Metadata } from "next";
-import "./globals.css";
-import { cn } from "@/lib/utils";
-import { Poppins } from "next/font/google";
-import { Footer } from "@/components/footer/Footer";
-import { TopBar } from "@/components/topBar/TopBar";
-import { Providers } from "./Providers";
-import { Toaster } from "@/components/ui/toaster";
+import type { Metadata } from 'next';
+import './globals.css';
+import { cn } from '@/lib/utils';
+import { Poppins } from 'next/font/google';
+import { Footer } from '@/components/footer/Footer';
+import { TopBar } from '@/components/topBar/TopBar';
+import { Providers } from './Providers';
+import { Toaster } from '@/components/ui/toaster';
 
 const poppins = Poppins({
-  subsets: ["latin"],
-  weight: ["200", "300", "400", "500", "600", "700"],
+  subsets: ['latin'],
+  weight: ['200', '300', '400', '500', '600', '700'],
 });
 
 export const metadata: Metadata = {
-  title: "ProfilOnchain",
-  description: "Crypto donations simplified",
+  title: 'ProfilOnchain',
+  description: 'Crypto donations simplified',
 };
 
 export default function RootLayout({
@@ -30,7 +30,7 @@ export default function RootLayout({
           <div
             className={
               (cn(poppins.className),
-              "relative flex flex-col min-h-screen lg:overflow-x-hidden")
+              'relative flex flex-col min-h-screen lg:overflow-x-hidden')
             }
           >
             <TopBar />
