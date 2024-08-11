@@ -1,9 +1,9 @@
-"use client";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ThemeProvider as NextThemesProvider } from "next-themes";
-import { WagmiProvider } from "wagmi";
-import { ConfigWagmi } from "@/constants/global";
-import { AppProvider } from "./AppContext";
+'use client';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ThemeProvider as NextThemesProvider } from 'next-themes';
+import { WagmiProvider } from 'wagmi';
+import { ConfigWagmi } from '@/constants/global';
+import { AppProvider } from './AppContext';
 
 const queryClient = new QueryClient();
 
@@ -22,11 +22,10 @@ export const Providers = (props: ProvidersProps) => {
           enableSystem
           disableTransitionOnChange
         >
-          <AppProvider>
-            {children}</AppProvider>
-
+          {/* <AppProvider> */}
+          {children}
+          {/* </AppProvider> */}
         </NextThemesProvider>
-
       </QueryClientProvider>
     </WagmiProvider>
   );

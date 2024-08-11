@@ -9,7 +9,6 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { shortenAddr } from '@/lib/utils';
-import { useUser } from '@/store/user.store';
 import { useAccount, useDisconnect } from 'wagmi';
 import { FaChevronDown } from 'react-icons/fa';
 import Link from 'next/link';

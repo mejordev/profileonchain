@@ -8,12 +8,7 @@ import {
   CardContent,
   CardFooter,
 } from '@/components/ui/card'; // Replace with your actual UI components
-import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import CryptoQRCode from './qrcode';
-import NetworkInfo from '@/components/topBar/NetworkInfo';
-import { Input } from '@/components/ui/input';
-
 export const ProfileCard = () => {
   // const {
   //   name = 'superhack2024',

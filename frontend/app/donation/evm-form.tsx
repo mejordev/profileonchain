@@ -13,13 +13,16 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import {
   type BaseError,
+  useAccount,
   useSendTransaction,
   useWaitForTransactionReceipt,
 } from 'wagmi';
 import { parseEther } from 'viem';
 import { useUserStore } from '@/store/user.store';
+import { ConnectSheet } from '@/components/topBar/ConnectSheet';
 const EvmForm = () => {
   const { ethereum } = useUserStore();
+  const { address } = useAccount();
   const {
     data: hash,
     error,
@@ -67,9 +70,16 @@ const EvmForm = () => {
               step="0.00000000001"
               placeholder="Enter Amount"
             />
-            <Button className="w-full" disabled={isPending} type="submit">
-              {isPending ? 'Confirming...' : 'Send'}
-            </Button>
+
+            {address ? (
+              <>
+                <Button className="w-full" disabled={isPending} type="submit">
+                  {isPending ? 'Confirming...' : 'Send'}
+                </Button>
+              </>
+            ) : (
+              <ConnectSheet />
+            )}
           </div>
         </form>
       </CardContent>

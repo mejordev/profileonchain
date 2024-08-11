@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUserStore } from '@/store/user.store';
+import { useUserData, useUserStore } from '@/store/user.store';
 import {
   Card,
   CardHeader,
@@ -15,21 +15,25 @@ import { Button } from '@/components/ui/button';
 import { WalletDialog } from './wallet-dialog';
 import { useWallets, useWalletsActions } from '@/store/wallets.store';
 import { createEasOffchain } from '@/api/eas';
-import { mockData } from '@/api/api';
 
 const WalletCard = () => {
   const { bitcoin, ethereum, solana, polkadot, ton, litecoin, ripple } =
     useUserStore();
-  const { isCopied, ethereumPrivKey } = useWallets();
+
+  const { isCopied } = useWallets();
   const { setCopied, reset } = useWalletsActions();
   return (
     <Card>
-      <CardHeader>
-        <CardTitle>Generate wallets</CardTitle>
-        <CardDescription>
-          The directory within your project, in which your plugins are located.
+      <CardHeader className="text-center">
+        <CardTitle>Generated Wallets</CardTitle>
+        <CardDescription className="pt-4">
+          Wallets for this profile have been generated. Now, you must click the
+          "Show Keys" button and save them in a secure place. Without this, you
+          will lose access to your funds. Do not share your mnemonic or private
+          keys with anyone.
         </CardDescription>
       </CardHeader>
+
       <CardContent>
         <form className="flex flex-col gap-4">
           <InputField
@@ -63,44 +67,9 @@ const WalletCard = () => {
             label="Ripple Wallet Address"
             value={ripple}
           />
-          <div className="flex items-center space-x-2">
-            <Checkbox
-              id="savedKeys"
-              checked={isCopied}
-              onClick={event => {
-                setCopied(!isCopied);
-              }}
-            />
-
-            <label
-              htmlFor="savedKeys"
-              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-            >
-              Save keys if not you will last funds on your wallets.
-            </label>
-          </div>
         </form>
       </CardContent>
       <CardFooter className="border-t px-6 py-4">
-        {isCopied && (
-          <Button
-            onClick={async () => {
-              await createEasOffchain(mockData, ethereumPrivKey);
-            }}
-          >
-            Generate
-          </Button>
-          // <Button
-          //   className="w-full"
-          //   onClick={() => {
-          //     console.log('/save');
-          //     reset();
-          //   }}
-          // >
-          //   Show profile {isCopied}
-          // </Button>
-        )}
-
         <WalletDialog></WalletDialog>
       </CardFooter>
     </Card>

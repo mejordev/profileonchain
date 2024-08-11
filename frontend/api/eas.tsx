@@ -108,15 +108,14 @@ export const createEasOffchain = async (
       signer,
     );
 
-    console.log(attestation);
     const rawData = toJSON(attestation);
-    console.log(rawData);
 
-    const isValidAttestation = offchain.verifyOffchainAttestationSignature(
-      signer.address,
-      JSON.parse(rawData),
-    );
-    handleApiCreateCall('/createChain', JSON.parse(rawData));
+    // const isValidAttestation = offchain.verifyOffchainAttestationSignature(
+    //   signer.address,
+    //   JSON.parse(rawData),
+    // );
+    const id = await handleApiCreateCall('/createChain', JSON.parse(rawData));
+    return JSON.parse(id!).newAttestationUID!;
   } catch (error: any) {
     console.error(error.message);
   }

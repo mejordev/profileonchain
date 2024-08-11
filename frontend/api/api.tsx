@@ -28,10 +28,24 @@ export const handleApiCall = async (url: string) => {
     }
   }
 };
+// export const handleApiCreateCall = async (url: string, attestation: any) => {
+//   try {
+//     const response = await axios.post(API_URL.concat(url), attestation);
+//     console.log(JSON.stringify(response.data));
+//   } catch (error) {
+//     if (axios.isAxiosError(error) && error.response) {
+//       console.log(error.response.data.message);
+//     } else {
+//       console.log('An error occurred');
+//     }
+//   }
+// };
+
 export const handleApiCreateCall = async (url: string, attestation: any) => {
   try {
-    const response = await axios.post(API_URL.concat(url), attestation);
+    const response = await axios.post('/api/createChain', attestation);
     console.log(JSON.stringify(response.data));
+    return JSON.stringify(response.data);
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
       console.log(error.response.data.message);

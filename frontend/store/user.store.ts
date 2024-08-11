@@ -73,5 +73,18 @@ export const useUserStore = create<UserStore>()((set, get) => ({
 }));
 
 export const useUser = () => useUserStore(state => state);
-
+export const useUserData = (): UserData =>
+  useUserStore(state => ({
+    name: state.name ?? '',
+    description: state.description ?? '',
+    avatarUrl: state.avatarUrl ?? '',
+    website: state.website ?? '',
+    bitcoin: state.bitcoin ?? '',
+    ethereum: state.ethereum ?? '',
+    solana: state.solana ?? '',
+    polkadot: state.polkadot ?? '',
+    ton: state.ton ?? '',
+    litecoin: state.litecoin ?? '',
+    ripple: state.ripple ?? '',
+  }));
 export const useUserActions = () => useUserStore(state => state.actions);

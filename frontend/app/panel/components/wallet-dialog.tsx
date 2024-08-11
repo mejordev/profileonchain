@@ -1,6 +1,5 @@
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
@@ -10,17 +9,28 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
-import { useWallets } from '@/store/wallets.store';
+import { useWallets, useWalletsActions } from '@/store/wallets.store';
 import { ScrollArea } from '@/components/ui/scroll-area';
-
 import { AlertCircle } from 'lucide-react';
-
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { useToast } from '@/components/ui/use-toast';
+import { Checkbox } from '@/components/ui/checkbox';
+import { useUserData } from '@/store/user.store';
+import { createEasOffchain } from '@/api/eas';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 export const WalletDialog = () => {
-  const { walletsLog } = useWallets();
+  const { walletsLog, isCopied, ethereumPrivKey } = useWallets();
   const { toast } = useToast();
+  const { setCopied, reset } = useWalletsActions();
+  const userData = useUserData();
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const goToDonation = (id: string) => {
+    router.push('/donation/'.concat(id));
+  };
 
   // Split the walletsLog string into an array using the newline character
   const walletsLogLines = walletsLog.split('\n');
@@ -58,11 +68,29 @@ export const WalletDialog = () => {
       .catch(err => {
         toast({
           variant: 'destructive',
-          title: 'Failed to copy: ',
+          title: 'Failed to clear clipboard: ',
           description: err,
         });
         console.error('Failed to clear clipboard: ', err);
       });
+  };
+
+  const handleContinue = async () => {
+    setIsLoading(true);
+    try {
+      clearClipboard();
+      const id = await createEasOffchain(userData, ethereumPrivKey);
+      goToDonation(id!);
+    } catch (error) {
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Failed to continue. Please try again.',
+      });
+      console.error('Error in handleContinue: ', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -91,16 +119,32 @@ export const WalletDialog = () => {
             ))}
           </div>
         </ScrollArea>
+        <div className="flex items-center space-x-2">
+          <Checkbox
+            id="savedKeys"
+            checked={isCopied}
+            onClick={event => {
+              setCopied(!isCopied);
+            }}
+          />
+
+          <label
+            htmlFor="savedKeys"
+            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+          >
+            I saved the wallet data in a secure place.
+          </label>
+        </div>
         <AlertDialogFooter>
           <Button onClick={copyToClipboard} className="mr-2">
             Copy to Clipboard
           </Button>
-          <AlertDialogCancel onClick={clearClipboard}>
-            Continue
-          </AlertDialogCancel>
-          {/* <AlertDialogAction onClick={clearClipboard}>
-            Continue
-          </AlertDialogAction> */}
+
+          {isCopied && (
+            <Button onClick={handleContinue}>
+              {isLoading ? 'Loading...' : 'Continue'}
+            </Button>
+          )}
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

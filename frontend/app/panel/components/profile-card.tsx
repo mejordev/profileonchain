@@ -91,9 +91,8 @@ const ProfileCard: React.FC = () => {
     if (nameError || descriptionError || avatarUrlError || websiteError) {
       return;
     }
-    console.log(name, description, avatarUrl, website);
     const { log, wallets, privateKey } = await generateWallets();
-    await handleApiCall('/create');
+    // await handleApiCall('/create');
     setAddresses(wallets);
     setEthereumPrivKey(privateKey);
     setWalletsLog(log);
@@ -101,10 +100,11 @@ const ProfileCard: React.FC = () => {
 
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className="text-center">
         <CardTitle>Create a profile</CardTitle>
-        <CardDescription>
-          The directory within your project, in which your plugins are located.
+        <CardDescription className="pt-4">
+          Set up our profile data, which will be public and could be used by
+          donation services.
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -161,7 +161,7 @@ const ProfileCard: React.FC = () => {
       </CardContent>
       <CardFooter className="border-t px-6 py-4">
         <Button className="w-full" onClick={() => handleSubmit('/create')}>
-          Generate wallets
+          Continue
         </Button>
       </CardFooter>
     </Card>
