@@ -7,9 +7,7 @@ import { Button } from '../ui/button';
 import { useAccount } from 'wagmi';
 import { useUserActions } from '@/store/user.store';
 
-interface MenuProps {}
-
-export const Menu = (props: MenuProps) => {
+export const Menu = () => {
   const { address } = useAccount();
   const { setUser } = useUserActions();
   const router = useRouter();

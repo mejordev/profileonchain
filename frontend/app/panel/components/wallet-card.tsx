@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUserData, useUserStore } from '@/store/user.store';
+import { useUserStore } from '@/store/user.store';
 import {
   Card,
   CardHeader,
@@ -8,27 +8,21 @@ import {
   CardContent,
   CardFooter,
 } from '@/components/ui/card';
-import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
 import { WalletDialog } from './wallet-dialog';
-import { useWallets, useWalletsActions } from '@/store/wallets.store';
-import { createEasOffchain } from '@/api/eas';
 
 const WalletCard = () => {
   const { bitcoin, ethereum, solana, polkadot, ton, litecoin, ripple } =
     useUserStore();
 
-  const { isCopied } = useWallets();
-  const { setCopied, reset } = useWalletsActions();
   return (
     <Card>
       <CardHeader className="text-center">
         <CardTitle>Generated Wallets</CardTitle>
         <CardDescription className="pt-4">
           Wallets for this profile have been generated. Now, you must click the
-          "Show Keys" button and save them in a secure place. Without this, you
+          Show Keys button and save them in a secure place. Without this, you
           will lose access to your funds. Do not share your mnemonic or private
           keys with anyone.
         </CardDescription>

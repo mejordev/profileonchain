@@ -1,8 +1,4 @@
-import {
-  EAS_CONTRACT_ADDRESS,
-  SCHEMA_UID,
-  schemaEncoder,
-} from '@/constants/global';
+import { EAS_CONTRACT_ADDRESS, SCHEMA_UID } from '@/constants/global';
 import { EAS } from '@ethereum-attestation-service/eas-sdk';
 import { ethers } from 'ethers';
 import type { NextApiRequest, NextApiResponse } from 'next';
@@ -26,8 +22,6 @@ export default async function handler(
   if (req.method === 'POST') {
     try {
       const encodedData = req.body.message.data;
-
-      console.log('Data', req.body);
 
       // Uncomment and implement validation if needed
       // const decodedData = schemaEncoder.decodeData(encodedData);
