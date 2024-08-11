@@ -2,7 +2,11 @@ import { createConfig, http } from 'wagmi';
 import { injected } from 'wagmi/connectors';
 import { base, baseSepolia, Chain, optimism } from 'viem/chains';
 import { ConfigChain } from '@/store/types';
-import { customBaseSepolia } from './chains';
+import {
+  customBaseSepolia,
+  virtual_base_sepolia,
+  virtual_optimistic_ethereum,
+} from './chains';
 import { SchemaEncoder } from '@ethereum-attestation-service/eas-sdk';
 
 export const API_URL = 'http://localhost:4000';
@@ -22,8 +26,14 @@ export const CHAIN_CONFIGS: ConfigChain[] = [
     routerContract:
       '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE' as `0x${string}`,
   },
+  // {
+  //   chain: virtual_base_sepolia,
+  //   chainLogo: '/img/chains/base-logo.png',
+  //   routerContract:
+  //     '0xE62Fd71c88EB706E657990d758DAc47bEFe82cC4' as `0x${string}`,
+  // },
   {
-    chain: optimism,
+    chain: virtual_optimistic_ethereum,
     chainLogo: '/img/chains/optimism-logo.png',
     routerContract:
       '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE' as `0x${string}`,

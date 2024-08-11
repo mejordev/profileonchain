@@ -17,7 +17,7 @@ export const Providers = (props: ProvidersProps) => {
       <QueryClientProvider client={queryClient}>
         <NextThemesProvider
           attribute="class"
-          defaultTheme="dark"
+          defaultTheme="bases"
           enableSystem
           disableTransitionOnChange
         >

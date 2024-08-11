@@ -13,13 +13,13 @@ export const TopBar = (props: TopBarProps) => {
       <div className="container flex items-center justify-between">
         <div className="flex gap-2 items-center">
           <Link href="/" className="text-xl flex gap-2 items-center">
-            <Image
+            {/* <Image
               src="next.svg"
               alt="logo"
               height={50}
               width={50}
               color="white"
-            />
+            /> */}
             <div className="uppercase font-semibold relative">
               ProfileOnchain
               <div className="absolute right-[-20px] top-[110%] text-xs font-bold text-primary bg-white px-1.5 rounded-full">

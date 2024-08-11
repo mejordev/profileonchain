@@ -13,30 +13,32 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import {
   type BaseError,
-  useAccount,
-  useSendTransaction,
   useWaitForTransactionReceipt,
+  useWriteContract,
+  useAccount,
 } from 'wagmi';
 import { parseEther } from 'viem';
 import { useUserStore } from '@/store/user.store';
 import { ConnectSheet } from '@/components/topBar/ConnectSheet';
+import { profileRouterAbi } from '@/abis/profileRouterAbi';
+import Link from 'next/link';
 const EvmForm = () => {
   const { ethereum } = useUserStore();
-  const { address } = useAccount();
-  const {
-    data: hash,
-    error,
-    isPending,
-    sendTransaction,
-  } = useSendTransaction();
-
+  const { address, chain } = useAccount();
+  const { data: hash, error, isPending, writeContract } = useWriteContract();
   async function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
     const to = ethereum as `0x${string}`;
     const value = formData.get('value') as string;
     console.log('valueee', value);
-    sendTransaction({ to, value: parseEther(value) });
+    writeContract({
+      address: '0xE62Fd71c88EB706E657990d758DAc47bEFe82cC4',
+      abi: profileRouterAbi.abi,
+      functionName: 'transferWithFee',
+      value: BigInt(parseEther(value)),
+      args: [to],
+    });
   }
 
   const { isLoading: isConfirming, isSuccess: isConfirmed } =
@@ -83,10 +85,20 @@ const EvmForm = () => {
           </div>
         </form>
       </CardContent>
-      <CardFooter className="border-t w-full px-6 py-4">
-        {hash && <div>Transaction Hash: {hash}</div>}
-        {isConfirming && <div>Waiting for confirmation...</div>}
-        {isConfirmed && <div>Transaction confirmed.</div>}
+      <CardFooter className="border-t w-full px-6 py-4 text-center">
+        {isConfirming && <div>Waiting for confirmation... </div>}
+        {isConfirmed && <div>Transaction confirmed: </div>}
+        {hash && (
+          <Button variant="link">
+            {' '}
+            <Link
+              target="_blank"
+              href={`${chain!.blockExplorers?.default.url}/tx/${hash}`}
+            >
+              Check tx block explorer
+            </Link>
+          </Button>
+        )}
         {error && (
           <div>Error: {(error as BaseError).shortMessage || error.message}</div>
         )}
