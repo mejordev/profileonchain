@@ -5,7 +5,7 @@
 ## Features
 
 - **Quick Setup**: No prior cryptocurrency knowledge required. Just a few clicks to create your profile.
-- **Automatic Wallet Generation**: Wallets are generated for you, which you need to save. These wallets are then linked to your public addresses on-chain using Ethereum Attestation Service (EAS) on Base-Sepolia: [https://base-sepolia.easscan.org/schema/view/0xe096c284b6f5436ee1d6536638984a32508e56973def5be08191f60e9a12c279](https://base-sepolia.easscan.org/schema)
+- **Automatic Wallet Generation**: Wallets are generated for you, which you need to save. These wallets are then linked to your public addresses on-chain using Ethereum Attestation Service (EAS) on Base-Sepolia: [https://base-sepolia.easscan.org/schema](https://base-sepolia.easscan.org/schema/view/0xe096c284b6f5436ee1d6536638984a32508e56973def5be08191f60e9a12c279)
 - **Virtual Testnet Integration**: The project uses Tenderly's virtual testnet, including an Optimism Mainnet fork, for deploying and verifying contracts.
 - **Offline Profile Option**: Create an offline profile that remains valid for a certain period. After this period, payment is required to create an on-chain profile.
 - **Custom Block Explorer**: Transactions can be viewed on Blockscout, where you can check your account and transaction history.
