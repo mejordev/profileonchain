@@ -32,12 +32,12 @@ export const CHAIN_CONFIGS: ConfigChain[] = [
   //   routerContract:
   //     '0xE62Fd71c88EB706E657990d758DAc47bEFe82cC4' as `0x${string}`,
   // },
-  {
-    chain: virtual_optimistic_ethereum,
-    chainLogo: '/img/chains/optimism-logo.png',
-    routerContract:
-      '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE' as `0x${string}`,
-  },
+  // {
+  //   chain: virtual_optimistic_ethereum,
+  //   chainLogo: '/img/chains/optimism-logo.png',
+  //   routerContract:
+  //     '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE' as `0x${string}`,
+  // },
 ];
 
 export const CHAINS_LIST = CHAIN_CONFIGS.map(config => config.chain) as [
